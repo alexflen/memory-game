@@ -50,7 +50,6 @@ const initCardPool = async() => {
 function assignCards(cntCardsRow, cntCardsCol) {
     console.assert(cntCardsCol * cntCardsRow % 2 === 0);
     let cardPool = randomShuffle(allCards).slice(0, cntCardsRow * cntCardsCol / 2);
-    console.log(cardPool);
     let cardDistribution = randomShuffle(cardPool.concat(cardPool));
     cellToCard = [];
 
@@ -100,7 +99,6 @@ function buildGame() {
 }
 
 function flipCard(row, col) {
-    console.log(row, col);
     let indexInOpened = openedCards.findIndex((element) => element[0] === row && element[1] === col);
     let card = document.getElementById(`card-${row}-${col}`);
     if (indexInOpened !== -1) {
