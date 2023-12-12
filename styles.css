@@ -1,0 +1,109 @@
+body {
+    background-color: floralwhite;
+}
+
+#field {
+    display: grid;
+    justify-content: center;
+    width: auto;
+    height: auto;
+    gap: 10px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.card {
+    display: grid;
+    width: 100%;
+    height:100%;
+}
+
+.menu-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: grid;
+    background-color: floralwhite;
+    max-width: 450px;
+    padding: 50px;
+    border-radius: 10px;
+    border-style: solid;
+    border-color: lightcoral;
+}
+
+#container-finished {
+    z-index: 1;
+    visibility: hidden;
+
+    grid-template-columns: 1fr;
+    gap: 20px;
+}
+
+.text {
+    font-size: 45px;
+    font-family: cursive;
+    color: crimson;
+}
+
+button {
+    border-radius: 8px;
+    border: 3px solid lightcoral;
+    background-color: lavenderblush;
+    color: crimson;
+    font-family: cursive;
+    font-size: 33px;
+}
+
+#container-settings {
+    z-index: 2;
+    visibility: hidden;
+
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    grid-template-areas:
+            'text text'
+            'input1 input2'
+            'button1 button2';
+}
+
+#text-settings {
+    grid-area: text;
+    text-align: center;
+}
+
+input {
+    font-size: 33px;
+    width: 210px;
+    text-align: center;
+    color: crimson;
+    border-color: lightcoral;
+    border-style: solid;
+}
+
+input:focus {
+    outline: none;
+    border-color: lightcoral;
+    border-style: solid;
+}
+
+#give-up-button {
+    z-index: 3;
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 10px;
+}
+
+#text-finished {
+    text-align: center;
+}
+
+#settings-error {
+    grid-column: 1 / 3;
+    color: red;
+    font-size: 33px;
+    max-width: 100%;
+}

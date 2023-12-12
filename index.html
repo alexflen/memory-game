@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="styles.css">
+    <title>Title</title>
+</head>
+<body>
+    <div id="container-finished" class="menu-container">
+        <div id="text-finished" class="text">Congratulations!</div>
+        <button id="button-restart" onclick="buildGame()">Restart</button>
+        <button id="settings-button" onclick="openSettings()">Settings</button>
+    </div>
+    <div id="container-settings" class="menu-container">
+        <div id="text-settings" class="text">Set height and width</div>
+        <input type="text" value="3" id="height-input">
+        <input type="text" value="4" id="width-input">
+        <button id="button-apply-settings" onclick="applySettings()">Apply</button>
+        <button id="button-close-settings" onclick="closeSettings()">Go back</button>
+    </div>
+
+    <button id="give-up-button" onclick="offerRestart(false)">Give up</button>
+
+    <div id="field"></div>
+</body>
+<script src="main.js"></script>
+</html>
