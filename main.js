@@ -1,5 +1,3 @@
-let folders = ["common", "rare", "legendary"]
-let assetsPath = "./resources/img/cats/"
 let allCards = []
 let imgExtension = ".png"
 let field = document.getElementById("field");
@@ -9,6 +7,7 @@ let cellToCard = [];
 let openedCards = [];
 let isEliminated = [];
 let gameStarted = false;
+let catPath = "./resources/img/cats/";
 
 function getRand(leftBound, rightBound) {
     return Math.floor(Math.random() * (rightBound - leftBound + 1)) + leftBound;
@@ -26,24 +25,31 @@ function randomShuffle(array) {
     return result
 }
 
-const checkImgExistence = async (basePath, imgNum, rarityInd) => {
-    return (await fetch(assetsPath + folders[rarityInd] + "/" + imgNum + imgExtension, {method: 'HEAD'}).then((res) => res.ok, () => false));
+const checkImgExistence = async (imgNum) => {
+    return (await fetch(catPath + imgNum + imgExtension, {method: 'HEAD'}).then((res) => res.ok, () => false));
 }
 
 const initCardPool = async() => {
-    for (let imgNum = 0; ; imgNum++) {
-        let anyFound = false;
-        for (let rarity = 0; rarity < 3; rarity++) {
-            await checkImgExistence(assetsPath, imgNum, rarity).then(found => {
-                if (found) {
-                    allCards.push([folders[rarity], imgNum + imgExtension]);
-                }
+    let leftBound = 0, rightBound = 255;
+    while (leftBound + 1 < rightBound) {
+        let mid = ~~((leftBound + rightBound) / 2);
+        let imgFound = false;
+        await checkImgExistence(mid).then(found => {
+            if (found) {
+                imgFound = true;
+            }
+        });
+        console.log(mid);
 
-                anyFound |= found;
-            });
+        if (imgFound) {
+            leftBound = mid;
+        } else {
+            rightBound = mid;
         }
+    }
 
-        if (!anyFound) break;
+    for (let imgNum = 0; imgNum <= leftBound; imgNum++) {
+        allCards.push(imgNum + imgExtension);
     }
 }
 
@@ -105,7 +111,7 @@ function flipCard(row, col) {
         card.src = './resources/img/cardback/default.png';
         openedCards.splice(indexInOpened, 1);
     } else {
-        card.src = assetsPath + cellToCard[row][col][0] + "/" + cellToCard[row][col][1];
+        card.src = catPath + cellToCard[row][col];
         openedCards.push([row, col]);
     }
 }
@@ -146,8 +152,7 @@ const onSecondFlippedCard = async (row, col) => {
         let firstCard = openedCards[0], secondCard = openedCards[1];
         let rowFirst = firstCard[0], rowSecond = secondCard[0];
         let colFirst = firstCard[1], colSecond = secondCard[1];
-        if (cellToCard[rowFirst][colFirst][0] === cellToCard[rowSecond][colSecond][0] &&
-            cellToCard[rowFirst][colFirst][1] === cellToCard[rowSecond][colSecond][1]) {
+        if (cellToCard[rowFirst][colFirst] === cellToCard[rowSecond][colSecond]) {
             await delay(200);
             eliminateCard(rowFirst, colFirst);
             eliminateCard(rowSecond, colSecond);
