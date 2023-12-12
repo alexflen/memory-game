@@ -39,7 +39,6 @@ const initCardPool = async() => {
                 imgFound = true;
             }
         });
-        console.log(mid);
 
         if (imgFound) {
             leftBound = mid;
