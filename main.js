@@ -222,6 +222,8 @@ function applySettings() {
         errorMessage = `total number of cards must be even`;
     } else if (newHeight * newWidth > 2 * allCards.length) {
         errorMessage = `the field is too large`;
+    } else if (newHeight <= 0 || newWidth <= 0) {
+        errorMessage = `the dimensions of the field must be positive`;
     } else {
         cntCardsCol = newWidth;
         cntCardsRow = newHeight;
