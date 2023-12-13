@@ -8,6 +8,8 @@ let openedCards = [];
 let isEliminated = [];
 let gameStarted = false;
 let catPath = "./resources/img/cats/";
+let cntTimesCardOpened = [];
+let nonoptimalCardOpenings = 0;
 
 function getRand(leftBound, rightBound) {
     return Math.floor(Math.random() * (rightBound - leftBound + 1)) + leftBound;
@@ -48,8 +50,11 @@ const initCardPool = async() => {
     }
 
     for (let imgNum = 0; imgNum <= leftBound; imgNum++) {
+        document.getElementById("field").innerHTML = `<img src="${catPath}${imgNum}${imgExtension}"\>`
         allCards.push(imgNum + imgExtension);
     }
+
+    document.getElementById("field").innerHTML = "";
 }
 
 function assignCards(cntCardsRow, cntCardsCol) {
@@ -66,10 +71,16 @@ function assignCards(cntCardsRow, cntCardsCol) {
     }
 }
 
+function changeVisibilityForClass(className, newValue) {
+    let elements = document.getElementsByClassName(className);
+    for (let index = 0; index < elements.length; index++) {
+        elements[index].style.visibility = newValue;
+    }
+}
+
 function buildGame() {
-    document.getElementById("container-finished").style.visibility = "hidden";
-    document.getElementById("container-settings").style.visibility = "hidden";
-    document.getElementById("give-up-button").style.visibility = "visible";
+    changeVisibilityForClass("after-game", "hidden");
+    changeVisibilityForClass("game-process", "visible");
 
     field.innerHTML = "";
     assignCards(cntCardsRow, cntCardsCol);
@@ -91,10 +102,16 @@ function buildGame() {
 
     openedCards = [];
     isEliminated = [];
+    cntTimesCardOpened = [];
+    nonoptimalCardOpenings = 0;
+    document.getElementById("non-optimal-moves").innerText = `Non-optimal moves: 0`;
+
     for (let row = 0; row < cntCardsRow; row++) {
         isEliminated.push([]);
+        cntTimesCardOpened.push([]);
         for (let col = 0; col < cntCardsCol; col++) {
             isEliminated[row].push(false);
+            cntTimesCardOpened[row].push(0);
             let htmlCard = `<img src='./resources/img/cardback/default.png' alt="cardback" class="card" id="card-${row}-${col}"/>`
             field.insertAdjacentHTML('beforeend', htmlCard);
         }
@@ -112,6 +129,11 @@ function flipCard(row, col) {
     } else {
         card.src = catPath + cellToCard[row][col];
         openedCards.push([row, col]);
+        cntTimesCardOpened[row][col]++;
+        if (cntTimesCardOpened[row][col] >= 3) {
+            nonoptimalCardOpenings++;
+            document.getElementById("non-optimal-moves").innerText = `Non-optimal moves: ${nonoptimalCardOpenings}`;
+        }
     }
 }
 
@@ -128,12 +150,12 @@ function isFieldCleared() {
 function offerRestart(didWin) {
     gameStarted = false;
     if (didWin) {
-        document.getElementById("text-finished").innerText = "Congratulations!";
+        document.getElementById("text-finished").innerText = `Congratulations! Score: ${nonoptimalCardOpenings}`;
     } else {
         document.getElementById("text-finished").innerText = "Oops.. Maybe try changing settings?";
     }
 
-    document.getElementById("give-up-button").style.visibility = "hidden";
+    changeVisibilityForClass("game-process", "hidden");
     document.getElementById("container-finished").style.visibility = "visible";
 }
 
@@ -145,8 +167,7 @@ function eliminateCard(row, col) {
 
 const delay = ms => new Promise(res => setTimeout(res, ms));
 
-const onSecondFlippedCard = async (row, col) => {
-    flipCard(row, col);
+const onSecondFlippedCard = async () => {
     if (openedCards.length > 0) {
         let firstCard = openedCards[0], secondCard = openedCards[1];
         let rowFirst = firstCard[0], rowSecond = secondCard[0];
@@ -183,7 +204,8 @@ field.addEventListener("click", function (event) {
                     if (openedCards.length === 0) {
                         flipCard(row, col);
                     } else if (openedCards.length === 1) {
-                        onSecondFlippedCard(row, col).then(_ => {
+                        flipCard(row, col);
+                        onSecondFlippedCard().then(_ => {
                         });
                     }
                 }
@@ -221,7 +243,7 @@ function applySettings() {
     if ((newHeight * newWidth) % 2 !== 0) {
         errorMessage = `total number of cards must be even`;
     } else if (newHeight * newWidth > 2 * allCards.length) {
-        errorMessage = `the field is too large`;
+        errorMessage = `the square of the field is too large, maximal possible square is ${allCards.length * 2}`;
     } else if (newHeight <= 0 || newWidth <= 0) {
         errorMessage = `the dimensions of the field must be positive`;
     } else {

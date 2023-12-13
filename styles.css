@@ -115,3 +115,14 @@ input:focus {
     font-size: var(--smaller-font-size);
     max-width: 100%;
 }
+
+#non-optimal-moves {
+    color: var(--text-color);
+    font-family: cursive;
+    font-size: var(--smaller-font-size);
+    display: grid;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 4;
+}
