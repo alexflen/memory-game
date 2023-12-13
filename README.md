@@ -15,6 +15,11 @@ Everything is straightforward: you open the game and see a 3x4 field of cards fl
 If flipped cards have same images, they will disappear. Otherwise, they will be turned back. If you have only one card opened, you can flip it back by clicking on it. When the field is cleared, you will be
 offered a restart, where you can also specify which field size you want. If you struggle to complete a field, there is a "Give up" button in the top right corner, which sends you to restart screen.
 
+### Score system
+
+Your score is the number of non-optimal moves: a move is considered non-optimal if you open a card more than two times. It is supposed that the optimal player would only need to open a card once for memorizing and
+once more for removing it from the field. The less your score (non-optimal moves) is, the better! The best score you can achieve is 0.
+
 ### How to run
 
 Initialize a server, for example, using built-in Webstorm server. The app does not require any additional libraries, only javascript. The app runs on client-side mostly and uses the server to get the images.
