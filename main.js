@@ -31,6 +31,8 @@ const checkImgExistence = async (imgNum) => {
     return (await fetch(catPath + imgNum + imgExtension, {method: 'HEAD'}).then((res) => res.ok, () => false));
 }
 
+const delay = ms => new Promise(res => setTimeout(res, ms));
+
 const initCardPool = async() => {
     let leftBound = 0, rightBound = 255;
     while (leftBound + 1 < rightBound) {
@@ -52,6 +54,7 @@ const initCardPool = async() => {
     for (let imgNum = 0; imgNum <= leftBound; imgNum++) {
         document.getElementById("field").innerHTML = `<img src="${catPath}${imgNum}${imgExtension}"\>`
         allCards.push(imgNum + imgExtension);
+        await delay(200);
     }
 
     document.getElementById("field").innerHTML = "";
@@ -164,8 +167,6 @@ function eliminateCard(row, col) {
     card.src = './resources/img/cardback/empty.png';
     isEliminated[row][col] = true;
 }
-
-const delay = ms => new Promise(res => setTimeout(res, ms));
 
 const onSecondFlippedCard = async () => {
     if (openedCards.length > 0) {
