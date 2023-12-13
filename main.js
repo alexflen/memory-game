@@ -187,7 +187,7 @@ const onSecondFlippedCard = async () => {
             return;
         }
 
-        await delay(800);
+        await delay(700);
 
         flipCard(rowFirst, colFirst);
         flipCard(rowSecond, colSecond);
