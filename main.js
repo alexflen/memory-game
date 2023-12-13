@@ -51,10 +51,10 @@ const initCardPool = async() => {
         }
     }
 
+    // load images so they won't load during the game
     for (let imgNum = 0; imgNum <= leftBound; imgNum++) {
         document.getElementById("field").innerHTML = `<img src="${catPath}${imgNum}${imgExtension}"\>`
         allCards.push(imgNum + imgExtension);
-        await delay(200);
     }
 
     document.getElementById("field").innerHTML = "";
