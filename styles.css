@@ -4,6 +4,7 @@
     --border-color: lightcoral;
     --secondary-background-color: lavenderblush;
     --smaller-font-size: 33px;
+    --font: "Comic Sans", cursive;
 }
 
 body {
@@ -52,7 +53,7 @@ body {
 
 .text {
     font-size: 45px;
-    font-family: cursive;
+    font-family: var(--font);
     color: var(--text-color);
 }
 
@@ -61,7 +62,7 @@ button {
     border: 3px solid var(--border-color);
     background-color: var(--secondary-background-color);
     color: var(--text-color);
-    font-family: cursive;
+    font-family: var(--font);
     font-size: var(--smaller-font-size);
 }
 
@@ -118,7 +119,7 @@ input:focus {
 
 #non-optimal-moves {
     color: var(--text-color);
-    font-family: cursive;
+    font-family: var(--font);
     font-size: var(--smaller-font-size);
     display: grid;
     position: absolute;
